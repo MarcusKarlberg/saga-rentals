@@ -11,7 +11,7 @@
 	<groupId>se.marcuskarlberg</groupId>
 	<artifactId>rentals</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>rentals</name>
+  <name>rentals</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -20,7 +20,7 @@
 	<developers>
 		<developer/>
 	</developers>
-	<scm>
+  <scm>
 		<connection/>
 		<developerConnection/>
 		<tag/>
@@ -46,7 +46,11 @@
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
 		</dependency>
-
+    <dependency>
+      <groupId>se.marcuskarlberg</groupId>
+      <artifactId>core</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>

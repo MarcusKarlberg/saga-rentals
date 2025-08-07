@@ -7,7 +7,8 @@ import java.time.*;
 @Data
 @Builder
 public class RentalDTO {
-  private String id;
+  private String customerId;
+  private String rentalId;
   private String itemName;
   private String articleId;
   private Integer quantity;
