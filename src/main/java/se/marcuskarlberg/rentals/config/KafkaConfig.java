@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import se.marcuskarlberg.RentalCreatedEvent;
 
 import java.util.Map;
 
@@ -15,7 +16,7 @@ public class KafkaConfig {
   public static final String RENTAL_CREATED_TOPIC = "rental-created-events-topic" ;
 
   @Bean
-  KafkaTemplate<String, Object> kafkaTemplate(ProducerFactory<String, Object> producerFactory) {
+  KafkaTemplate<String, RentalCreatedEvent> kafkaTemplate(ProducerFactory<String, RentalCreatedEvent> producerFactory) {
     return new KafkaTemplate<>(producerFactory);
   }
 

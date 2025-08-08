@@ -5,15 +5,25 @@ public class RentalCreatedEvent {
   private String customerId;
   private String articleId;
   private Integer quantity;
+  private Double price;
 
   public RentalCreatedEvent() {
   }
 
-  public RentalCreatedEvent(String rentalId, String customerId, String articleId, Integer quantity) {
+  public RentalCreatedEvent(String rentalId, String customerId, String articleId, Integer quantity, Double price) {
     this.rentalId = rentalId;
     this.customerId = customerId;
     this.articleId = articleId;
     this.quantity = quantity;
+    this.price = price;
+  }
+
+  public Double getPrice() {
+    return price;
+  }
+
+  public void setPrice(Double price) {
+    this.price = price;
   }
 
   public String getRentalId() {

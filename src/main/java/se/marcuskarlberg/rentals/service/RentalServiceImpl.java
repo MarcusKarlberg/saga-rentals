@@ -1,10 +1,11 @@
 package se.marcuskarlberg.rentals.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import se.marcuskarlberg.RentalCreatedEvent;
+import se.marcuskarlberg.rentals.mapper.RentalMapper;
 import se.marcuskarlberg.rentals.model.*;
 import se.marcuskarlberg.rentals.repository.RentalRepository;
 
@@ -15,10 +16,11 @@ import static se.marcuskarlberg.rentals.config.KafkaConfig.RENTAL_CREATED_TOPIC;
 @Slf4j
 @Service
 public class RentalServiceImpl implements RentalService {
+  public static final String MESSAGE_ID = "messageId";
   private final RentalRepository rentalRepository;
-  private final KafkaTemplate<String, Object> kafkaTemplate;
+  private final KafkaTemplate<String, RentalCreatedEvent> kafkaTemplate;
 
-  public RentalServiceImpl(RentalRepository rentalRepository, KafkaTemplate<String, Object> kafkaTemplate) {
+  public RentalServiceImpl(RentalRepository rentalRepository, KafkaTemplate<String, RentalCreatedEvent> kafkaTemplate) {
     this.rentalRepository = rentalRepository;
     this.kafkaTemplate = kafkaTemplate;
   }
@@ -29,15 +31,18 @@ public class RentalServiceImpl implements RentalService {
     String rentalRequestId = UUID.randomUUID().toString();
     rentalDTO.setRentalId(rentalRequestId);
 
-    Rental rental = new Rental();
-    BeanUtils.copyProperties(rentalDTO, rental);
+    Rental rental = RentalMapper.dtoToEntity(rentalDTO);
     rental.setStatus(RentalStatus.CREATED);
-    rentalRepository.save(rental);
+    Rental savedRental = rentalRepository.save(rental);
 
-    RentalCreatedEvent rentalCreatedEvent = new RentalCreatedEvent();
-    BeanUtils.copyProperties(rentalDTO, rentalCreatedEvent);
-    kafkaTemplate.send(RENTAL_CREATED_TOPIC, rentalCreatedEvent);
+    RentalCreatedEvent rentalCreatedEvent = RentalMapper.entityToEvent(savedRental);
+    String messageId = UUID.randomUUID().toString();
+    ProducerRecord<String, RentalCreatedEvent> record =
+      new ProducerRecord<>(RENTAL_CREATED_TOPIC, rentalRequestId, rentalCreatedEvent);
+    record.headers().add(MESSAGE_ID, messageId.getBytes());
 
-    return rentalDTO;
+    kafkaTemplate.send(record);
+
+    return RentalMapper.entityToDto(savedRental);
   }
 }
