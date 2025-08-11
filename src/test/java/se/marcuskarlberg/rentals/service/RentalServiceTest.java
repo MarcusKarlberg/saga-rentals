@@ -6,9 +6,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
-import se.marcuskarlberg.RentalCreatedEvent;
+import se.marcuskarlberg.events.RentalCreatedEvent;
+import se.marcuskarlberg.rentals.config.KafkaConfig;
 import se.marcuskarlberg.rentals.model.Rental;
 import se.marcuskarlberg.rentals.model.RentalDTO;
 import se.marcuskarlberg.rentals.repository.RentalRepository;
@@ -26,13 +28,21 @@ public class RentalServiceTest {
   RentalRepository rentalRepository;
 
   @Mock
+  @Qualifier("rentalCreatedKafkaTemplate")
   KafkaTemplate<String, RentalCreatedEvent> kafkaTemplate;
 
   RentalServiceImpl rentalService;
 
+  KafkaConfig kafkaConfig;
+
   @Test
   void createRentalTest() {
-    this.rentalService = new RentalServiceImpl(this.rentalRepository, this.kafkaTemplate);
+    this.kafkaConfig = new KafkaConfig("rental-created-events-topic", "rental-commands");
+    this.rentalService = new RentalServiceImpl(
+      this.rentalRepository,
+      this.kafkaTemplate,
+      this.kafkaConfig
+    );
     RentalDTO rentalDto = createRentalDto();
 
     //when(rentalRepository.save(any(Rental.class))).thenReturn(RentalMapper.dtoToEntity(rentalDto));
@@ -45,7 +55,7 @@ public class RentalServiceTest {
     CompletableFuture<SendResult<String, RentalCreatedEvent>> future = CompletableFuture.completedFuture(mock(SendResult.class));
     when(kafkaTemplate.send(any(ProducerRecord.class))).thenReturn(future);
 
-    RentalDTO returnedDto = rentalService.createRentalRequest(rentalDto);
+    RentalDTO returnedDto = rentalService.createRental(rentalDto);
 
     // Capture the ProducerRecord argument from kafkaTemplate.send()
     ArgumentCaptor<ProducerRecord<String, RentalCreatedEvent>> recordCaptor = ArgumentCaptor.forClass(ProducerRecord.class);
@@ -57,7 +67,7 @@ public class RentalServiceTest {
     RentalCreatedEvent rentalEvent = capturedRecord.value();
 
     assertEquals(returnedDto.getRentalId(), rentalEvent.getRentalId());
-    assertEquals(returnedDto.getArticleId(), rentalEvent.getArticleId());
+    assertEquals(returnedDto.getItemId(), rentalEvent.getItemId());
     assertEquals(returnedDto.getQuantity(), rentalEvent.getQuantity());
     assertEquals(returnedDto.getCustomerId(), rentalEvent.getCustomerId());
   }
@@ -69,7 +79,7 @@ public class RentalServiceTest {
       .customerId(UUID.randomUUID().toString())
       .price(99.0)
       .quantity(1)
-      .articleId(UUID.randomUUID().toString())
+      .itemId(UUID.randomUUID().toString())
       .pickupDate(LocalDateTime.now())
       .returnDate(LocalDateTime.now().plusDays(1))
       .returnedAt(LocalDateTime.now().plusDays(1))

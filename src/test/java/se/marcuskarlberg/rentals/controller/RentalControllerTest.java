@@ -30,13 +30,13 @@ public class RentalControllerTest {
   @Test
   void createRentalRequestTest() throws Exception {
     RentalDTO rentalDTO = RentalDTO.builder()
-      .articleId(UUID.randomUUID().toString())
+      .itemId(UUID.randomUUID().toString())
       .itemName("Iphone")
       .price(99.0)
       .quantity(1)
       .build();
 
-    when(rentalService.createRentalRequest(any(RentalDTO.class))).thenReturn(rentalDTO);
+    when(rentalService.createRental(any(RentalDTO.class))).thenReturn(rentalDTO);
 
     mockMvc.perform(post("/rentals")
         .contentType(MediaType.APPLICATION_JSON)

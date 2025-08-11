@@ -10,7 +10,7 @@ public class RentalDTO {
   private String customerId;
   private String rentalId;
   private String itemName;
-  private String articleId;
+  private String itemId;
   private Integer quantity;
   private Double price;
   private LocalDateTime pickupDate;

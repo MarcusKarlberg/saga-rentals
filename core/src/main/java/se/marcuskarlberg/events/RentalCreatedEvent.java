@@ -1,19 +1,19 @@
-package se.marcuskarlberg;
+package se.marcuskarlberg.events;
 
 public class RentalCreatedEvent {
   private String rentalId;
   private String customerId;
-  private String articleId;
+  private String itemId;
   private Integer quantity;
   private Double price;
 
   public RentalCreatedEvent() {
   }
 
-  public RentalCreatedEvent(String rentalId, String customerId, String articleId, Integer quantity, Double price) {
+  public RentalCreatedEvent(String rentalId, String customerId, String itemId, Integer quantity, Double price) {
     this.rentalId = rentalId;
     this.customerId = customerId;
-    this.articleId = articleId;
+    this.itemId = itemId;
     this.quantity = quantity;
     this.price = price;
   }
@@ -42,12 +42,12 @@ public class RentalCreatedEvent {
     this.customerId = customerId;
   }
 
-  public String getArticleId() {
-    return articleId;
+  public String getItemId() {
+    return itemId;
   }
 
-  public void setArticleId(String articleId) {
-    this.articleId = articleId;
+  public void setItemId(String itemId) {
+    this.itemId = itemId;
   }
 
   public Integer getQuantity() {

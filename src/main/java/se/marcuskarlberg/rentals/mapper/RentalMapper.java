@@ -1,7 +1,7 @@
 package se.marcuskarlberg.rentals.mapper;
 
 import org.springframework.stereotype.Component;
-import se.marcuskarlberg.RentalCreatedEvent;
+import se.marcuskarlberg.events.RentalCreatedEvent;
 import se.marcuskarlberg.rentals.model.Rental;
 import se.marcuskarlberg.rentals.model.RentalDTO;
 
@@ -13,7 +13,7 @@ public class RentalMapper {
       .customerId(dto.getCustomerId())
       .rentalId(dto.getRentalId())
       .itemName(dto.getItemName())
-      .articleId(dto.getArticleId())
+      .articleId(dto.getItemId())
       .quantity(dto.getQuantity())
       .price(dto.getPrice())
       .pickupDate(dto.getPickupDate())
@@ -26,7 +26,7 @@ public class RentalMapper {
     RentalCreatedEvent event = new RentalCreatedEvent();
     event.setRentalId(rentalEntity.getRentalId());
     event.setCustomerId(rentalEntity.getCustomerId());
-    event.setArticleId(rentalEntity.getArticleId());
+    event.setItemId(rentalEntity.getArticleId());
     event.setQuantity(rentalEntity.getQuantity());
     event.setPrice(rentalEntity.getPrice());
 
@@ -38,7 +38,7 @@ public class RentalMapper {
       .customerId(savedRental.getCustomerId())
       .rentalId(savedRental.getRentalId())
       .itemName(savedRental.getItemName())
-      .articleId(savedRental.getArticleId())
+      .itemId(savedRental.getArticleId())
       .quantity(savedRental.getQuantity())
       .price(savedRental.getPrice())
       .pickupDate(savedRental.getPickupDate())
