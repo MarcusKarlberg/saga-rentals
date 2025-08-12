@@ -40,9 +40,6 @@ public class Rental implements Serializable {
   private String articleId;
 
   @Column(nullable = false)
-  private Integer quantity;
-
-  @Column(nullable = false)
   private Double price;
 
   @Column(nullable = false)

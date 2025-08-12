@@ -33,7 +33,6 @@ public class RentalControllerTest {
       .itemId(UUID.randomUUID().toString())
       .itemName("Iphone")
       .price(99.0)
-      .quantity(1)
       .build();
 
     when(rentalService.createRental(any(RentalDTO.class))).thenReturn(rentalDTO);

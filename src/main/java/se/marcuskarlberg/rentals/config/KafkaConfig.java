@@ -1,6 +1,5 @@
 package se.marcuskarlberg.rentals.config;
 
-import lombok.Getter;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -26,7 +25,6 @@ import se.marcuskarlberg.rentals.exception.RetriableException;
 import java.util.HashMap;
 import java.util.Map;
 
-@Getter
 @Configuration
 public class KafkaConfig {
 
@@ -132,5 +130,13 @@ public class KafkaConfig {
       .replicas(1)
       .configs(Map.of("min.insync.replicas", "1"))
       .build();
+  }
+
+  public String getRentalCreatedTopic() {
+    return rentalCreatedTopic;
+  }
+
+  public String getRentalCommandTopic() {
+    return rentalCommandTopic;
   }
 }

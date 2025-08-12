@@ -14,7 +14,6 @@ public class RentalMapper {
       .rentalId(dto.getRentalId())
       .itemName(dto.getItemName())
       .articleId(dto.getItemId())
-      .quantity(dto.getQuantity())
       .price(dto.getPrice())
       .pickupDate(dto.getPickupDate())
       .returnDate(dto.getReturnDate())
@@ -27,8 +26,10 @@ public class RentalMapper {
     event.setRentalId(rentalEntity.getRentalId());
     event.setCustomerId(rentalEntity.getCustomerId());
     event.setItemId(rentalEntity.getArticleId());
-    event.setQuantity(rentalEntity.getQuantity());
     event.setPrice(rentalEntity.getPrice());
+    event.setPickupDate(rentalEntity.getPickupDate());
+    event.setReturnDate(rentalEntity.getReturnDate());
+    event.setReturnedAt(rentalEntity.getReturnedAt());
 
     return event;
   }
@@ -39,7 +40,6 @@ public class RentalMapper {
       .rentalId(savedRental.getRentalId())
       .itemName(savedRental.getItemName())
       .itemId(savedRental.getArticleId())
-      .quantity(savedRental.getQuantity())
       .price(savedRental.getPrice())
       .pickupDate(savedRental.getPickupDate())
       .returnDate(savedRental.getReturnDate())

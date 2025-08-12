@@ -68,7 +68,6 @@ public class RentalServiceTest {
 
     assertEquals(returnedDto.getRentalId(), rentalEvent.getRentalId());
     assertEquals(returnedDto.getItemId(), rentalEvent.getItemId());
-    assertEquals(returnedDto.getQuantity(), rentalEvent.getQuantity());
     assertEquals(returnedDto.getCustomerId(), rentalEvent.getCustomerId());
   }
 
@@ -78,7 +77,6 @@ public class RentalServiceTest {
       .itemName("itemName")
       .customerId(UUID.randomUUID().toString())
       .price(99.0)
-      .quantity(1)
       .itemId(UUID.randomUUID().toString())
       .pickupDate(LocalDateTime.now())
       .returnDate(LocalDateTime.now().plusDays(1))

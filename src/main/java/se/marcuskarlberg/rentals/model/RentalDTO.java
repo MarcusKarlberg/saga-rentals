@@ -11,7 +11,6 @@ public class RentalDTO {
   private String rentalId;
   private String itemName;
   private String itemId;
-  private Integer quantity;
   private Double price;
   private LocalDateTime pickupDate;
   private LocalDateTime returnDate;

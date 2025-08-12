@@ -29,14 +29,25 @@ public class RentalSaga {
 
   @KafkaHandler
   public void handleEvent(@Payload RentalCreatedEvent rentalCreatedEvent) {
-    log.info("Received rental event. Handling payload: {}", rentalCreatedEvent);
+    log.info(
+            "Received rental event. Handling payload: CustomerId: {}. rentalId: {}. ItemId: {}",
+            rentalCreatedEvent.getCustomerId(),
+            rentalCreatedEvent.getRentalId(),
+            rentalCreatedEvent.getItemId()
+    );
 
     ReserveItemCommand reserveItemCommand = new ReserveItemCommand(
       rentalCreatedEvent.getRentalId(),
       rentalCreatedEvent.getItemId(),
-      rentalCreatedEvent.getQuantity()
+      rentalCreatedEvent.getPickupDate(),
+      rentalCreatedEvent.getReturnDate(),
+      rentalCreatedEvent.getReturnedAt()
     );
-    log.info("Sending reserve item command: {}", reserveItemCommand);
+    log.info(
+            "Sending reserve item command: RentalId: {}. ItemId: {}",
+            reserveItemCommand.getRentalId(),
+            reserveItemCommand.getItemId()
+    );
 
     kafkaTemplate.send(kafkaConfig.getRentalCommandTopic(), reserveItemCommand);
   }
